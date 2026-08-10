@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Thiệp Mời Tốt Nghiệp - Thu Hoài</title>
+  <!-- Swiper CSS cho Slider Ảnh -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
+  <style>
+    :root {
+      --bg-color: #61b8dd;
+      --card-bg: #98dff7;
+      --primary-blue: #93c5fd;
+      --accent-blue: #60a5fa;
+      --dark-blue: #3b82f6;
+      --text-main: #87216a;
+      --text-muted: #922e36;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 15px;
+    }
+
+    .card-container {
+      width: 100%;
+      max-width: 400px;
+      background: var(--card-bg);
+      border-radius: 24px;
+      box-shadow: 0 12px 32px rgba(147, 197, 253, 0.25);
+      padding: 24px 20px;
+      position: relative;
+      text-align: center;
+      overflow: hidden;
+      border: 1px solid #60e2e6;
+    }
+
+    /* Nút Nhạc */
+    .music-btn {
+      position: absolute;
+      top: 18px;
+      right: 18px;
+      background: #1edeec;
+      border: 1px solid var(--primary-blue);
+      color: var(--dark-blue);
+      border-radius: 50%;
+      width: 38px;
+      height: 38px;
+      cursor: pointer;
+      font-size: 16px;
+      z-index: 20;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+    }
+
+    .music-btn.playing {
+      animation: spin 4s linear infinite;
+      background: var(--primary-blue);
+      color: rgb(229, 129, 129);
+    }
+
+    @keyframes spin {
+      100% { transform: rotate(360deg); }
+    }
+
+    /* TRANG 1: Màn hình Phong Bì */
+    #envelope-screen {
+      padding: 40px 10px 20px;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .school-logo {
+      width: 65px;
+      height: 65px;
+      background: #ef7b7b;
+      border-radius: 50%;
+      margin: 0 auto 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+    }
+
+    .grad-title {
+      font-size: 28px;
+      font-family: 'Georgia', serif;
+      font-style: italic;
+      color: var(--dark-blue);
+      margin-bottom: 4px;
+    }
+
+    .school-name {
+      font-size: 13px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 35px;
+    }
+
+    .envelope-box {
+      width: 170px;
+      height: 115px;
+      background: #bfdbfe;
+      margin: 0 auto 30px;
+      border-radius: 12px;
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      box-shadow: 0 8px 20px rgba(96, 165, 250, 0.3);
+      transition: transform 0.3s ease;
+    }
+
+    .envelope-box:hover {
+      transform: translateY(-4px) scale(1.02);
+    }
+
+    .seal {
+      width: 42px;
+      height: 42px;
+      background: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      color: var(--dark-blue);
+      font-size: 14px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      border: 2px solid #eff6ff;
+    }
+
+    .click-hint {
+      font-size: 12px;
+      letter-spacing: 1.5px;
+      color: #94a3b8;
+      font-weight: 500;
+    }
+
+    .footer-name {
+      margin-top: 40px;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-main);
+    }
+
+    .footer-sub {
+      font-size: 11px;
+      color: var(--text-muted);
+      font-style: italic;
+    }
+
+    /* TRANG 2: Nội Dung Thiệp */
+    #card-content {
+      display: none;
+      animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .invite-header {
+      margin-bottom: 15px;
+    }
+
+    .invite-header p {
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    .guest-name {
+      font-family: 'Georgia', serif;
+      font-style: italic;
+      font-size: 22px;
+      color: var(--accent-blue);
+      margin: 2px 0 6px;
+    }
+
+    .host-name {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--dark-blue);
+    }
+
+    /* Swiper Carousel */
+    .swiper {
+      width: 100%;
+      height: 280px;
+      border-radius: 16px;
+      margin: 18px 0;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+    }
+
+    .swiper-slide img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .details-box {
+      background: #f8fafc;
+      border: 1px solid #f1f5f9;
+      border-radius: 14px;
+      padding: 16px;
+      text-align: left;
+      margin-bottom: 20px;
+      font-size: 13.5px;
+      line-height: 1.6;
+    }
+
+    .detail-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .detail-item:last-child {
+      margin-bottom: 0;
+    }
+
+    .detail-icon {
+      font-size: 16px;
+      margin-top: 1px;
+    }
+
+    .map-btn {
+      display: inline-block;
+      margin-top: 8px;
+      padding: 6px 12px;
+      background: #e0f2fe;
+      color: #0369a1;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 12px;
+      transition: background 0.2s;
+    }
+
+    .map-btn:hover {
+      background: #bae6fd;
+    }
+
+    .message-quote {
+      font-style: italic;
+      color: var(--text-muted);
+      border-left: 3px solid var(--primary-blue);
+      padding-left: 10px;
+      margin-bottom: 12px;
+    }
+
+    /* Form RSVP */
+    .rsvp-section {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 16px;
+      padding: 16px;
+    }
+
+    .rsvp-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--dark-blue);
+      margin-bottom: 12px;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    textarea {
+      width: 100%;
+      height: 75px;
+      border: 1px solid #cbd5e1;
+      border-radius: 10px;
+      padding: 10px;
+      font-family: inherit;
+      font-size: 13px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    textarea:focus {
+      border-color: var(--accent-blue);
+    }
+
+    .radio-option {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      text-align: left;
+      cursor: pointer;
+    }
+
+    .submit-btn {
+      background: var(--dark-blue);
+      color: white;
+      border: none;
+      padding: 12px;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+      transition: opacity 0.2s;
+    }
+
+    .submit-btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    #status-msg {
+      font-size: 13px;
+      color: #16a34a;
+      display: none;
+      margin-top: 8px;
+      font-weight: 500;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="card-container">
+    <!-- Nút Bật/Tắt Nhạc -->
+    <button class="music-btn" id="musicBtn" onclick="toggleMusic()">🎵</button>
+    <!-- Nhạc nền mẫu (Thay bằng link nhạc mp3 bạn chọn) -->
+    <audio id="bgMusic" loop src="https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3"></audio>
+
+    <!-- TRANG 1: PHONG BÌ -->
+    <div id="envelope-screen" onclick="openCard()">
+      <div class="school-logo">🎓</div>
+      <h1 class="grad-title">Graduation</h1>
+      <p class="school-name">Trường Đại Học Công Nghiệp Hà Nội</p>
+
+      <div class="envelope-box">
+        <div class="seal">Hoài</div>
+      </div>
+
+      <p class="click-hint">CHẠM VÀO PHONG BÌ ĐỂ MỞ THIỆP</p>
+
+      <div style="margin-top: 25px;">
+        <p class="footer-name">Nguyễn Thị Thu Hoài</p>
+        <p class="footer-sub">2022 - 2026 • with love</p>
+      </div>
+    </div>
+
+    <!-- TRANG 2: NỘI DUNG THIỆP MỜI -->
+    <div id="card-content">
+      <div class="invite-header">
+        <p>Thương mời:</p>
+        <h2 class="guest-name">Bạn Thân Yêu</h2>
+        <p>tới tham dự Lễ tốt nghiệp của</p>
+        <h2 class="host-name">Thu Hoài</h2>
+      </div>
+
+      <!-- Carousel Ảnh (Sử dụng Swiper JS) -->
+      <div class="swiper mySwiper">
+        <div class="swiper-wrapper">
+          <!-- Thay link hình ảnh của bạn vào các thẻ img bên dưới -->
+          <div class="swiper-slide"><img src="https://cdn.phototourl.com/free/2026-08-10-6205965b-090a-4a9b-968b-7fc090b896a7.jpg" alt="Ảnh 1"></div>
+          <div class="swiper-slide"><img src="https://cdn.phototourl.com/free/2026-08-10-1d257d4e-e2e6-4a83-8622-58e98f2865f3.jpg" alt="Ảnh 2"></div>
+          <div class="swiper-slide"><img src="https://cdn.phototourl.com/free/2026-08-10-d023deab-7ddf-4f2d-b4c2-dfc79206d3ea.jpg" alt="Ảnh 3"></div>
+        </div>
+      </div>
+
+      <!-- Thông tin thời gian, địa điểm -->
+      <div class="details-box">
+        <div class="message-quote">
+          "Cảm ơn bạn vì đã luôn đồng hành cùng mình trong suốt những năm tháng thanh xuân. Sự hiện diện của bạn là món quà ý nghĩa nhất!"
+        </div>
+        <hr style="border: none; border-top: 1px dashed #cbd5e1; margin: 10px 0;">
+        
+        <div class="detail-item">
+          <span class="detail-icon">📅</span>
+          <div><b>Thứ Bảy, 15/08/2026</b> | 15:00</div>
+        </div>
+        
+        <div class="detail-item">
+          <span class="detail-icon">🏫</span>
+          <div>
+            <b>Trường Đại Học Công Nghiệp Hà Nội</b><br>
+            <span style="color: var(--text-muted); font-size: 12.5px;">Cơ sở 2 ĐH Công Nghiệp Hà Nội, Thôn Trung, Tây Lựu, Hà Nội</span><br>
+            <!-- Thay link Google Maps thực tế vào href bên dưới -->
+            <a href="https://maps.app.goo.gl/mVRvzeSBCH9k7DMy7?g_st=ifm" target="_blank" class="map-btn">📍 Xem bản đồ chỉ đường</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Form Xác Nhận Tham Dự & Lời Chúc -->
+      <div class="rsvp-section">
+        <h3 class="rsvp-title">Xác Nhận Tham Dự</h3>
+        <form id="rsvpForm">
+          <textarea name="message" placeholder="Gửi tên của bạn và lời chúc mừng đến Thu Hoài tại đây..." required></textarea>
+          
+          <div style="display: flex; flex-direction: column; gap: 6px;">
+            <label class="radio-option">
+              <input type="radio" name="attendance" value="Chắc chắn tui sẽ có mặt" checked> Chắc chắn tui sẽ có mặt 🎉
+            </label>
+            <label class="radio-option">
+              <input type="radio" name="attendance" value="Tiếc quá, tui bận mất rồi"> Tiếc quá, tui bận mất rồi 😢
+            </label>
+          </div>
+
+          <button type="submit" class="submit-btn" id="submitBtn">Gửi xác nhận 💌</button>
+        </form>
+        <p id="status-msg"></p>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Swiper JS Script -->
+  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+  <script>
+    // 1. Khởi tạo Slider Carousel Ảnh
+    var swiper = new Swiper(".mySwiper", {
+      loop: true,
+      autoplay: {
+        delay: 2800,
+        disableOnInteraction: false,
+      },
+    });
+
+    // 2. Hàm mở thiệp & phát nhạc khi click phong bì
+    function openCard() {
+      document.getElementById('envelope-screen').style.display = 'none';
+      document.getElementById('card-content').style.display = 'block';
+      
+      var music = document.getElementById('bgMusic');
+      var musicBtn = document.getElementById('musicBtn');
+      music.play().then(() => {
+        musicBtn.classList.add('playing');
+      }).catch(err => {
+        console.log("Autoplay blocked or waiting for user gesture.");
+      });
+    }
+
+    // 3. Bật/Tắt Nhạc
+    function toggleMusic() {
+      var music = document.getElementById('bgMusic');
+      var musicBtn = document.getElementById('musicBtn');
+      if (music.paused) {
+        music.play();
+        musicBtn.classList.add('playing');
+      } else {
+        music.pause();
+        musicBtn.classList.remove('playing');
+      }
+    }
+
+    // 4. Gửi Lời Chúc Về Google Sheets
+    // DÁN LINK GOOGLE APPS SCRIPT BẠN VỪA COPY VÀO BÊN DƯỚI:
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbzn3JBqlyT0AEfEhreM8x2XTlIYDeVJq0sckBcKbRdqgl-_tCjnnMKdL3bdWBBJfnuMqg/exec';
+    const form = document.getElementById('rsvpForm');
+
+    form.addEventListener('submit', e => {
+      e.preventDefault();
+      
+      if (scriptURL === 'YOUR_GOOGLE_APPS_SCRIPT_URL') {
+        alert('Bạn chưa dán URL Google Apps Script vào file index.html!');
+        return;
+      }
+
+      const btn = document.getElementById('submitBtn');
+      btn.innerText = 'Đang gửi...';
+      btn.disabled = true;
+
+      fetch(scriptURL, { method: 'POST', body: new FormData(form) })
+        .then(response => {
+          document.getElementById('status-msg').innerText = 'Cảm ơn bạn! Lời chúc đã được gửi thành công ✨';
+          document.getElementById('status-msg').style.display = 'block';
+          form.reset();
+          btn.innerText = 'Đã gửi thành công ✔';
+        })
+        .catch(error => {
+          alert('Có lỗi xảy ra, vui lòng thử lại!');
+          btn.disabled = false;
+          btn.innerText = 'Gửi xác nhận 💌';
+        });
+    });
+  </script>
+</body>
+</html>
